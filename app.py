@@ -10,7 +10,14 @@ from dotenv import load_dotenv
 load_dotenv() 
 
 app = Flask(__name__)
-CORS(app) 
+CORS(app, resources={
+    r"/*": {
+        "origins": "*",
+        "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+        "allow_headers": ["*"],
+        "send_wildcard": True
+    }
+}) 
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///wazzer.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
