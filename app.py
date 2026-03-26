@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 import datetime
@@ -42,6 +42,10 @@ class Contact(db.Model):
 
 with app.app_context():
     db.create_all()
+
+@app.route('/')
+def home():
+    return render_template('index.html')
 
 # Получаване на измервания от часовника
 @app.route('/measures', methods=['POST'])
