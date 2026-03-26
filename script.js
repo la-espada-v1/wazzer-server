@@ -1,19 +1,15 @@
 const pulseSlider = document.getElementById("pulseSlider");
 const lowHrSlider = document.getElementById("lowHrSlider");
 const highHrSlider = document.getElementById("highHrSlider");
-
 const pulseText = document.getElementById("pulseValue");
 const lowHrText = document.getElementById("lowHrValue");
 const highHrText = document.getElementById("highHrValue");
 const noiseText = document.getElementById("noiseValue");
-
-const statusBox = document.getElementById("status");
 const simulateToggle = document.getElementById("simulateToggle");
 const themeToggle = document.getElementById("themeToggle");
 
 let contacts = [];
 
-/* ---------- СМЯНА НА ТЕМАТА ---------- */
 themeToggle.onclick = () => {
   document.body.classList.toggle("light-theme");
   if (document.body.classList.contains("light-theme")) {
@@ -23,16 +19,28 @@ themeToggle.onclick = () => {
   }
 };
 
-/* ---------- СЛАЙДЕРИ ЗА ВОДАТА ---------- */
 lowHrSlider.oninput = () => { lowHrText.innerText = lowHrSlider.value; };
 highHrSlider.oninput = () => { highHrText.innerText = highHrSlider.value; };
 
 pulseSlider.oninput = () => {
   pulseText.innerText = pulseSlider.value;
-  checkStatus();
+  checkPulseLevel(); 
 };
 
-/* ---------- SIMULATION ---------- */
+function checkPulseLevel() {
+  const pulse = parseInt(pulseSlider.value);
+
+  if (pulse > 110) {
+    highHrSlider.value = 25;
+    highHrText.innerText = 25;
+  } else if (pulse < 50) {
+    lowHrSlider.value = 38;
+    lowHrText.innerText = 38;
+  }
+  
+  sendMeasuresToBackend();
+}
+
 setInterval(() => {
   if (simulateToggle.checked) {
     let randomPulse = Math.floor(Math.random() * 100) + 50;
@@ -42,54 +50,43 @@ setInterval(() => {
     pulseText.innerText = randomPulse;
     noiseText.innerText = randomNoise;
 
-    checkStatus();
+    checkPulseLevel();
   }
 }, 2000);
 
-/* ---------- STATUS LOGIC (МАГИЯТА ЗА БЕЗОПАСНОСТ) ---------- */
-function checkStatus() {
-  const pulse = parseInt(pulseSlider.value);
+async function addContact() {
+  const inputName = document.getElementById("fullName").value;
+  const inputTelephone = document.getElementById("phone").value;
 
-  if (pulse > 110) {
-    // ОПАСНОСТ: ВИСОК ПУЛС
-    statusBox.innerText = "DANGER: HIGH PULSE";
-    statusBox.className = "status danger";
-
-    // Автоматично пуска хладка вода
-    highHrSlider.value = 25;
-    highHrText.innerText = 25;
-
-  } else if (pulse < 50) {
-    // ОПАСНОСТ: НИСЪК ПУЛС
-    statusBox.innerText = "DANGER: LOW PULSE";
-    statusBox.className = "status danger";
-
-    // Автоматично пуска по-топла вода
-    lowHrSlider.value = 38;
-    lowHrText.innerText = 38;
-
-  } else {
-    // НОРМАЛНО СЪСТОЯНИЕ
-    statusBox.innerText = "SAFE";
-    statusBox.className = "status safe";
-  }
-}
-
-/* ---------- CONTACTS (CRUD) ---------- */
-function addContact() {
-  const name = document.getElementById("name").value;
-  const family = document.getElementById("family").value;
-  const phone = document.getElementById("phone").value;
-
-  if (!name || !family || !phone) {
+  if (!inputName || !inputTelephone) {
     alert("⚠️ Please fill in all fields!");
     return;
   }
 
-  const contact = { name, family, phone };
-  contacts.push(contact);
-  renderContacts();
-  clearInputs();
+  const contactData = { 
+    name: inputName, 
+    telephone: inputTelephone 
+  };
+
+  try {
+    const response = await fetch('http://127.0.0.1:5000/contact', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(contactData)
+    });
+
+    if (response.ok) {
+      contacts.push(contactData);
+      renderContacts();
+      clearInputs();
+    } else {
+      alert("⚠️ Възникна грешка при запазване в базата данни.");
+    }
+  } catch (error) {
+    alert("⚠️ Не мога да се свържа със сървъра!");
+  }
 }
 
 function renderContacts() {
@@ -99,8 +96,8 @@ function renderContacts() {
   contacts.forEach((c, index) => {
     const li = document.createElement("li");
     li.innerHTML = `
-      <b>${c.name} ${c.family}</b><br>
-      📞 ${c.phone}<br>
+      <b>${c.name}</b><br>
+      📞 ${c.telephone}<br>
       <button onclick="editContact(${index})">Edit</button>
       <button style="background: #ef4444; color: white;" onclick="deleteContact(${index})">Delete</button>
     `;
@@ -115,14 +112,38 @@ function deleteContact(index) {
 
 function editContact(index) {
   const c = contacts[index];
-  document.getElementById("name").value = c.name;
-  document.getElementById("family").value = c.family;
-  document.getElementById("phone").value = c.phone;
+  document.getElementById("fullName").value = c.name;
+  document.getElementById("phone").value = c.telephone;
   deleteContact(index);
 }
 
 function clearInputs() {
-  document.getElementById("name").value = "";
-  document.getElementById("family").value = "";
+  document.getElementById("fullName").value = "";
   document.getElementById("phone").value = "";
+}
+
+async function sendMeasuresToBackend() {
+  const currentPulse = parseInt(pulseSlider.value);
+  const currentLowTemp = parseInt(lowHrSlider.value);
+  const currentHighTemp = parseInt(highHrSlider.value);
+  const currentNoise = parseInt(document.getElementById("noiseValue").innerText);
+
+  const measuresData = {
+    pulse: currentPulse,
+    low_water_temp: currentLowTemp,
+    high_water_temp: currentHighTemp,
+    noise: currentNoise
+  };
+
+  try {
+    await fetch('http://127.0.0.1:5000/measures', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(measuresData)
+    });
+  } catch (error) {
+    console.error(error);
+  }
 }
