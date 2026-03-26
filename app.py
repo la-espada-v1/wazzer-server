@@ -2,14 +2,30 @@ from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 import datetime
+import os          
+import requests     
+from dotenv import load_dotenv 
+
+# Зареждаме ключа от .env файла
+load_dotenv() 
 
 app = Flask(__name__)
 CORS(app) 
 
-
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///wazzer.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
+
+# --- ПОМОЩНА ФУНКЦИЯ ЗА SMS (Добави я тук) ---
+def send_sms(phone_number, message_text):
+    api_key = os.getenv('TEXTBELT_API_KEY')
+    payload = {
+        'phone': phone_number,
+        'message': message_text,
+        'key': api_key
+    }
+    response = requests.post('https://textbelt.com/text', data=payload)
+    return response.json()
 
 # Модел за таблицата с контакти 
 class Contact(db.Model):
@@ -17,7 +33,6 @@ class Contact(db.Model):
     name = db.Column(db.String(100), nullable=False)
     telephone = db.Column(db.String(20), nullable=False)
 
-# Създаване на базата данни в началото
 with app.app_context():
     db.create_all()
 
@@ -35,6 +50,10 @@ def receive_measures():
     shower_status = "RUNNING"
     if bpm > 100:
         shower_status = "STOPPED_FOR_SAFETY"
+        # АВТОМАТИЧЕН SMS ПРИ ВИСОК ПУЛС:
+        first_contact = Contact.query.first()
+        if first_contact:
+            send_sms(first_contact.telephone, f"Emergency! High BPM: {bpm}")
     
     print(f"DEBUG: BPM: {bpm}, Sound: {sound}, Status: {shower_status}")
     
@@ -44,7 +63,7 @@ def receive_measures():
         "timestamp": datetime.datetime.now().isoformat()
     }), 200
 
-# Добавяне на нов контакт в SQLite
+# Добавяне на нов контакт
 @app.route('/contact', methods=['POST'])
 def add_contact():
     data = request.json
@@ -54,40 +73,44 @@ def add_contact():
     new_contact = Contact(name=data['name'], telephone=data['telephone'])
     db.session.add(new_contact)
     db.session.commit()
-    
-    return jsonify({"message": f"Contact {data['name']} saved to SQLite!"}), 201
+    return jsonify({"message": f"Contact {data['name']} saved!"}), 201
 
-# Вземане на всички хора (за да ги видиш в списък)
+# Вземане на всички хора
 @app.route('/contact', methods=['GET'])
 def get_contacts():
     contacts = Contact.query.all()
-    output = []
-    for c in contacts:
-        output.append({"id": c.id, "name": c.name, "telephone": c.telephone})
+    output = [{"id": c.id, "name": c.name, "telephone": c.telephone} for c in contacts]
     return jsonify(output), 200
 
-# Изтриване на човек по неговото ID
+# Изтриване на човек
 @app.route('/contact/<int:id>', methods=['DELETE'])
 def delete_contact(id):
     contact_to_delete = Contact.query.get(id)
     if not contact_to_delete:
-        return jsonify({"message": "Човекът не е намерен!"}), 404
-    
+        return jsonify({"message": "Не е намерен!"}), 404
     db.session.delete(contact_to_delete)
     db.session.commit()
-    return jsonify({"message": f"Контактът с ID {id} беше изтрит успешно!"}), 200
+    return jsonify({"message": f"ID {id} изтрит!"}), 200
 
-# Изчистване на ЦЕЛИЯ списък (ако искаш да почнеш на чисто)
-@app.route('/contact/clear', methods=['DELETE'])
-def clear_all_contacts():
-    try:
-        Contact.query.delete()
-        db.session.commit()
-        return jsonify({"message": "Всички контакти са изтрити!"}), 200
-    except:
-        db.session.rollback()
-        return jsonify({"message": "Грешка при триенето!"}), 500
+# Изпращане на известие (Ръчно)
+@app.route('/notify', methods=['POST'])
+def notify_emergency():
+    data = request.json or {}
+    message = data.get('message', 'Emergency alert from Wazzer system!')
+    contacts = Contact.query.all()
+    results = []
+    
+    for c in contacts:
+        api_response = send_sms(c.telephone, message)
+        results.append({
+            "phone": c.telephone,
+            "success": api_response.get('success'),
+            "error": api_response.get('error')
+        })
+        break # Слагаме break, защото безплатният Textbelt позволява само 1 SMS
+
+    return jsonify({"status": "notifications_processed", "details": results}), 200
 
 if __name__ == '__main__':
-    # Пускаме сървъра
-    app.run(debug=True, port=5000)
+    # ВАЖНО: Смени на 0.0.0.0, за да може колегата ти да те вижда!
+    app.run(debug=True, host='0.0.0.0', port=5000)

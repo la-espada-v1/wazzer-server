@@ -1,2 +1,4 @@
 instance/wazzer.db
 venv
+.env
+venv/.env
