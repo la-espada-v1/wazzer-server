@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from models import Configuration # НОВО: Вече четем от таблицата с настройки
+from models import Configuration 
 import datetime
 
 measure_bp = Blueprint('measure', __name__)

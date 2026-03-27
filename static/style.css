@@ -1,7 +1,7 @@
 
 @font-face {
-  font-family: 'font';
-  src: url('monograph-Regular.ttf') format('truetype'); 
+  font-family: 'Monograph';
+  src: url('monograph-Regular.ttf') format('truetype');
 }
 
 
@@ -21,7 +21,7 @@
 }
 
 body {
-font-family: 'font', sans-serif;
+font-family: 'Bulgia', sans-serif;
 background-color: var(--bg-color);
 color: var(--text-primary);
 margin: 0;
@@ -34,6 +34,11 @@ transition: background 0.4s ease, color 0.4s ease;
 }
 
 
+.main-title
+ {
+font-family: 'Monograph', sans-serif;
+}
+
 .top-header {
 width: 100%;
 padding: 2rem 1rem;
@@ -45,7 +50,7 @@ margin-bottom: 1rem;
 
 .main-title {
 margin: 0 0 1rem 0;
-font-size: 2.5rem;
+font-size: 5rem;
 font-weight: 800;
 letter-spacing: 0.3rem;
 color: var(--cream);
@@ -93,18 +98,18 @@ background-color: var(--card-bg);
 border: 0.1rem solid var(--border-color);
 border-radius: 1rem;
 padding: 1.8rem;
-box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.2);
+box-shadow: 0 0.4
+rem 0.5rem rgba(0, 0, 0, 0.2);
 margin-bottom: 2rem;
 transition: transform 0.3s ease;
 }
 
-.card:hover { transform: translateY(-0.2rem); }
+.card:hover { transform: translateY(-0.15rem); }
 
 .card h3 {
 margin: 0 0 1.2rem 0;
-font-size: 1.25rem;
+font-size: 1.75rem;
 color: var(--peach);
-border-bottom: 0.1rem solid var(--border-color);
 padding-bottom: 0.8rem;
 }
 
@@ -128,7 +133,7 @@ height: 2rem;
 position: absolute;
 width: 100%;
 height: 0.4rem;
-background: var(--dark-bg);
+background: #d7cfc6;
 border-radius: 0.5rem;
 top: 50%;
 transform: translateY(-50%);
@@ -151,7 +156,7 @@ pointer-events: auto;
 width: 1.5rem;
 height: 1.5rem;
 border-radius: 50%;
-background: #ef4444; 
+background: #ee4e4e; 
 cursor: pointer;
 }
 
@@ -162,7 +167,7 @@ pointer-events: auto;
 width: 1.5rem;
 height: 1.5rem;
 border-radius: 50%;
-background: #7f1d1d; 
+background: #842727; 
 cursor: pointer;
 }
 
@@ -184,7 +189,7 @@ font-size: 1rem;
 width: 100%;
 height: 0.4rem;
 border-radius: 0.5rem;
-background: var(--dark-bg);
+background: #d7d1ca;
 appearance: none;
 outline: none;
 }
@@ -194,7 +199,8 @@ appearance: none;
 width: 1.2rem;
 height: 1.2rem;
 border-radius: 50%;
-background: #746b61; 
+border-color: var(--brown-border);  
+background: #726c64; 
 cursor: pointer;
 }
 
@@ -247,11 +253,18 @@ border-radius: 0.5rem;
 
 
 body.light-theme {
---bg-color: #f1f5f9; 
---card-bg: #ffffff;
+--bg-color: #eef0dd; 
+--card-bg: #f2f3ea;
 --text-primary: #1C2D35; 
---text-secondary: #c2410c; 
---border-color: #cbd5e1;
+--text-secondary: #c64b1b; 
+--border-color: #a2b2be;
 --dark-bg: #e2e8f0;
 }
-
+body.light-theme .main-title { 
+  color: #79848f;
+}
+body.light-theme .theme-btn:hover {
+  background: #f4f2ed; 
+  color: #1f3037; 
+  border-color: #a2b2be; 
+}
