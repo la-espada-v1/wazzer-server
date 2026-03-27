@@ -10,46 +10,37 @@
 
 <div class="app">
   
-  <button id="themeToggle" class="theme-btn">☀️ Light Mode</button>
+  <button id="themeToggle" class="theme-btn">Light Mode</button>
 
-  <h1>Wazzer 🚿</h1>
+  <h1>Wazzer</h1>
 
-  <div id="status" class="status safe">SAFE</div>
+
 
   <div class="card">
-    <h3>❤️ Pulse</h3>
+    <h3> Pulse</h3>
     <div class="value"><span id="pulseValue">75</span> BPM</div>
     <input type="range" min="40" max="140" value="75" id="pulseSlider">
   </div>
 
   <div class="card">
-    <h3>🚰 Emergency Water Temps</h3>
+    <h3>Emergency Water Temps</h3>
     
     <div class="water-control">
-      <div style="margin-bottom: 5px;">📉 Low HR Water: <span id="lowHrValue" style="color: #38bdf8; font-weight: bold;">34</span>°C</div>
+      <div style="margin-bottom: 5px;">Low HR Water: <span id="lowHrValue" style="color: #38bdf8; font-weight: bold;">34</span>°C</div>
       <input type="range" min="15" max="45" value="34" id="lowHrSlider" class="cold-slider">
     </div>
 
     <div class="water-control" style="margin-top: 20px;">
-      <div style="margin-bottom: 5px;">📈 High HR Water: <span id="highHrValue" style="color: #ef4444; font-weight: bold;">34</span>°C</div>
+      <div style="margin-bottom: 5px;">High HR Water: <span id="highHrValue" style="color: #ef4444; font-weight: bold;">34</span>°C</div>
       <input type="range" min="15" max="45" value="34" id="highHrSlider" class="hot-slider">
     </div>
   </div>
 
-  <div class="card">
-    <h3>🔊 Noise Level</h3>
-    <div class="value"><span id="noiseValue">40</span> dB</div>
-  </div>
+ 
+  
 
   <div class="card">
-    <label class="simulation-label">
-      <input type="checkbox" id="simulateToggle">
-      <span>Enable Simulation Mode</span>
-    </label>
-  </div>
-
-  <div class="card">
-    <h3>📞 Emergency Contacts</h3>
+    <h3>Emergency Contacts</h3>
     <div class="contact-inputs">
       <input type="text" placeholder="Full Name" id="fullName">
       <input type="tel" placeholder="Phone Number" id="phone">

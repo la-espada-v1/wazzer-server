@@ -41,16 +41,7 @@ pulseSlider.oninput = () => {
 };
 
 // ЛОГИКА ЗА НИВАТА
-function checkPulseLevel() {
-  const pulse = parseInt(pulseSlider.value);
-  if (pulse > 110) {
-    highHrSlider.value = 25;
-    highHrText.innerText = 25;
-  } else if (pulse < 50) {
-    lowHrSlider.value = 38;
-    lowHrText.innerText = 38;
-  }
-}
+
 
 // ДОБАВЯНЕ НА КОНТАКТ (POST заявка към теб)
 async function addContact() {
