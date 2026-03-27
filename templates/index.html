@@ -8,10 +8,14 @@
 </head>
 <body>
 
-  <header class="top-header">
-    <h1 class="main-title">WAZZER</h1>
-    <button id="themeToggle" class="theme-btn">Light Mode</button>
+  <header class="top-navbar">
+    <div class="nav-content">
+      <h1 class="main-title">WAZZER</h1>
+      <button id="themeToggle" class="theme-btn">Light Mode</button>
+    </div>
   </header>
+
+  <div class="app-wrapper">
 
   <div class="app-wrapper">
     <div class="dashboard-container">
@@ -19,12 +23,18 @@
       <section class="left-panel">
         
         <div class="card">
-          <h3>Current Pulse</h3>
-          <div class="value-display">
-            <span id="pulseValue">75</span>
+          <h3>Target Pulse Limits</h3>
+          <div class="pulse-values">
+            <span class="cool-temp">Min: <span id="pulseMinValue">60</span></span>
             <span class="unit">BPM</span>
+            <span class="hot-temp">Max: <span id="pulseMaxValue">140</span></span>
           </div>
-          <input type="range" min="40" max="140" value="75" id="pulseSlider" class="custom-slider main-slider">
+          
+          <div class="dual-slider-container">
+            <div class="slider-track"></div>
+            <input type="range" min="40" max="220" value="60" id="pulseMinSlider" class="pulse-slider-min">
+            <input type="range" min="40" max="220" value="140" id="pulseMaxSlider" class="pulse-slider-max">
+          </div>
         </div>
 
         <div class="card">
@@ -35,7 +45,7 @@
               <span>Low HR Water:</span>
               <span class="temp-value cool-temp"><span id="lowHrValue">34</span>°C</span>
             </div>
-            <input type="range" min="15" max="45" value="34" id="lowHrSlider" class="custom-slider cold-slider">
+            <input type="range" min="15" max="45" value="34" id="lowHrSlider" class="custom-slider white-thumb">
           </div>
 
           <div class="water-control">
@@ -43,7 +53,7 @@
               <span>Regular HR Water:</span>
               <span class="temp-value warm-temp"><span id="regularHrValue">38</span>°C</span>
             </div>
-            <input type="range" min="15" max="45" value="38" id="regularHrSlider" class="custom-slider regular-slider">
+            <input type="range" min="15" max="45" value="38" id="regularHrSlider" class="custom-slider white-thumb">
           </div>
 
           <div class="water-control">
@@ -51,7 +61,7 @@
               <span>High HR Water:</span>
               <span class="temp-value hot-temp"><span id="highHrValue">40</span>°C</span>
             </div>
-            <input type="range" min="15" max="45" value="40" id="highHrSlider" class="custom-slider hot-slider">
+            <input type="range" min="15" max="45" value="40" id="highHrSlider" class="custom-slider white-thumb">
           </div>
         </div>
       </section>
@@ -59,7 +69,6 @@
       <section class="right-panel">
         <div class="card h-full">
           <h3>Emergency Contacts</h3>
-          <p class="card-subtitle">Notify these contacts if a fall is detected.</p>
           
           <div class="contact-inputs">
             <input type="text" placeholder="Full Name" id="fullName" class="custom-input">
@@ -67,8 +76,7 @@
             <button onclick="addContact()" class="action-btn">Add Contact</button>
           </div>
           
-          <ul id="contactList" class="contact-list">
-             </ul>
+          <ul id="contactList" class="contact-list"></ul>
         </div>
       </section>
 
