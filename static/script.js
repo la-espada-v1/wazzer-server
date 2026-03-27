@@ -1,5 +1,5 @@
-// --- КОНФИГУРАЦИЯ ---
-const backendIP = "192.168.1.XX"; // Сложи ТВОЕТО IP тук!
+
+const backendIP = "127.0.0.1";
 const API_URL = `http://${backendIP}:5000`;
 
 const pulseSlider = document.getElementById("pulseSlider");
@@ -8,8 +8,6 @@ const highHrSlider = document.getElementById("highHrSlider");
 const pulseText = document.getElementById("pulseValue");
 const lowHrText = document.getElementById("lowHrValue");
 const highHrText = document.getElementById("highHrValue");
-const noiseText = document.getElementById("noiseValue");
-const simulateToggle = document.getElementById("simulateToggle");
 const themeToggle = document.getElementById("themeToggle");
 
 let contacts = [];
@@ -52,20 +50,7 @@ function checkPulseLevel() {
     lowHrSlider.value = 38;
     lowHrText.innerText = 38;
   }
-  sendMeasuresToBackend(); // Праща данни към твоя Python
 }
-
-// СИМУЛАТОР
-setInterval(() => {
-  if (simulateToggle.checked) {
-    let randomPulse = Math.floor(Math.random() * 100) + 50;
-    let randomNoise = Math.floor(Math.random() * 60) + 30;
-    pulseSlider.value = randomPulse;
-    pulseText.innerText = randomPulse;
-    noiseText.innerText = randomNoise;
-    checkPulseLevel();
-  }
-}, 3000); // На всеки 3 секунди, за да не спамим SMS-ите твърде бързо
 
 // ДОБАВЯНЕ НА КОНТАКТ (POST заявка към теб)
 async function addContact() {
@@ -132,26 +117,4 @@ async function deleteContact(index) {
 function clearInputs() {
   document.getElementById("fullName").value = "";
   document.getElementById("phone").value = "";
-}
-
-// ИЗПРАЩАНЕ НА ДАННИТЕ (Към твоя /measures)
-async function sendMeasuresToBackend() {
-  const currentPulse = parseInt(pulseSlider.value);
-  const currentNoise = parseInt(noiseText.innerText);
-
-  const measuresData = {
-    bpm: currentPulse,
-    soundVolume: currentNoise,
-    bloodOxygen: 98 // Тестова стойност
-  };
-
-  try {
-    await fetch(`${API_URL}/measures`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(measuresData)
-    });
-  } catch (error) {
-    console.error("Грешка при пращане на мерки към бекенда.");
-  }
 }
