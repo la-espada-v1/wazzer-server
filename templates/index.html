@@ -8,52 +8,72 @@
 </head>
 <body>
 
-<div class="app">
-  
-  <button id="themeToggle" class="theme-btn">Light Mode</button>
+  <header class="top-header">
+    <h1 class="main-title">WAZZER</h1>
+    <button id="themeToggle" class="theme-btn">Light Mode</button>
+  </header>
 
-  <h1>Wazzer</h1>
+  <div class="app-wrapper">
+    <div class="dashboard-container">
+      
+      <section class="left-panel">
+        
+        <div class="card">
+          <h3>Current Pulse</h3>
+          <div class="value-display">
+            <span id="pulseValue">75</span>
+            <span class="unit">BPM</span>
+          </div>
+          <input type="range" min="40" max="140" value="75" id="pulseSlider" class="custom-slider main-slider">
+        </div>
 
+        <div class="card">
+          <h3>Emergency Water Temps</h3>
+          
+          <div class="water-control">
+            <div class="control-header">
+              <span>Low HR Water:</span>
+              <span class="temp-value cool-temp"><span id="lowHrValue">34</span>°C</span>
+            </div>
+            <input type="range" min="15" max="45" value="34" id="lowHrSlider" class="custom-slider cold-slider">
+          </div>
 
+          <div class="water-control">
+            <div class="control-header">
+              <span>Regular HR Water:</span>
+              <span class="temp-value warm-temp"><span id="regularHrValue">38</span>°C</span>
+            </div>
+            <input type="range" min="15" max="45" value="38" id="regularHrSlider" class="custom-slider regular-slider">
+          </div>
 
-  <div class="card">
-    <h3> Pulse</h3>
-    <div class="value"><span id="pulseValue">75</span> BPM</div>
-    <input type="range" min="40" max="140" value="75" id="pulseSlider">
-  </div>
+          <div class="water-control">
+            <div class="control-header">
+              <span>High HR Water:</span>
+              <span class="temp-value hot-temp"><span id="highHrValue">40</span>°C</span>
+            </div>
+            <input type="range" min="15" max="45" value="40" id="highHrSlider" class="custom-slider hot-slider">
+          </div>
+        </div>
+      </section>
 
-  <div class="card">
-    <h3>Emergency Water Temps</h3>
-    
-    <div class="water-control">
-      <div style="margin-bottom: 5px;">Low HR Water: <span id="lowHrValue" style="color: #38bdf8; font-weight: bold;">34</span>°C</div>
-      <input type="range" min="15" max="45" value="34" id="lowHrSlider" class="cold-slider">
+      <section class="right-panel">
+        <div class="card h-full">
+          <h3>Emergency Contacts</h3>
+          <p class="card-subtitle">Notify these contacts if a fall is detected.</p>
+          
+          <div class="contact-inputs">
+            <input type="text" placeholder="Full Name" id="fullName" class="custom-input">
+            <input type="tel" placeholder="Phone Number" id="phone" class="custom-input">
+            <button onclick="addContact()" class="action-btn">Add Contact</button>
+          </div>
+          
+          <ul id="contactList" class="contact-list">
+             </ul>
+        </div>
+      </section>
+
     </div>
-
-    <div class="water-control" style="margin-top: 20px;">
-      <div style="margin-bottom: 5px;">Regular HR Water: <span id="highHrValue" style="color: #ef4444; font-weight: bold;">34</span>°C</div>
-      <input type="range" min="15" max="45" value="34" id="highHrSlider" class="hot-slider">
-    </div>
   </div>
-
-        <div class="water-control" style="margin-top: 20px;">
-      <div style="margin-bottom: 5px;">High HR Water: <span id="highHrValue" style="color: #ef4444; font-weight: bold;">34</span>°C</div>
-      <input type="range" min="15" max="45" value="34" id="highHrSlider" class="hot-slider">
-    </div>
-  </div>
-  
-
-  <div class="card">
-    <h3>Emergency Contacts</h3>
-    <div class="contact-inputs">
-      <input type="text" placeholder="Full Name" id="fullName">
-      <input type="tel" placeholder="Phone Number" id="phone">
-      <button onclick="addContact()">Add Contact</button>
-    </div>
-    <ul id="contactList"></ul>
-  </div>
-
-</div>
 
 <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
