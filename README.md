@@ -2,7 +2,7 @@
   <img width=256px src="https://raw.githubusercontent.com/la-espada-v1/wazzer-watch/refs/heads/main/app/src/main/icon-playstore.png" />
   <h1 align="center">Wazzer</h1>
   <p align="center">
-    A smart showerhead system that adjusts water temperature based on the heart rate of people with anemia.
+    An intelligent IoT showerhead system designed for personal safety and health monitoring.
   </p>
 </p>
 
@@ -16,13 +16,13 @@
 ---
 
 ## 🚀 Overview
-**Wazzer** е IoT решение, предназначено да предпазва потребители с анемия или сърдечно-съдови проблеми по време на къпане. Системата следи пулса в реално време и динамично променя температурата на водата, за да предотврати припадъци или топлинни шокове чрез автоматизирана логика за безопасност.
+**Wazzer** is an IoT (Internet of Things) solution developed to protect users with anemia or cardiovascular conditions during their daily routines. By monitoring heart rate (BPM) and body temperature in real-time, the system dynamically adjusts water temperature to prevent fainting, dizziness, or thermal shocks through automated safety logic.
 
 ## 🛠️ Tech Stack
 * **Backend:** Python / Flask
-* **Database:** SQLite & SQLAlchemy
+* **Database:** SQLite & SQLAlchemy (Persistent Storage)
 * **Frontend:** JavaScript (Vanilla), HTML5, CSS3
-* **Communication:** REST API Architecture
+* **Communication:** REST API Architecture with Modular Blueprints
 
 ## ⚙️ Installation
 
