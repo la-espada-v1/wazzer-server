@@ -28,7 +28,7 @@ window.onload = async () => {
 // ТЕМАТА
 themeToggle.onclick = () => {
   document.body.classList.toggle("light-theme");
-  themeToggle.innerText = document.body.classList.contains("light-theme") ? "🌙 Dark Mode" : "☀️ Light Mode";
+  themeToggle.innerText = document.body.classList.contains("light-theme") ? "Dark Mode" : " Light Mode";
 };
 
 // СЛАЙДЕРИТЕ
