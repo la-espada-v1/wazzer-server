@@ -4,6 +4,7 @@ from models import db
 from dotenv import load_dotenv
 
 # Import Blueprints
+from routes.ui import ui_bp
 from routes.contact import contact_bp
 from routes.notify import notify_bp
 from routes.measure import measure_bp
@@ -17,7 +18,8 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
 
-# Register Blueprints
+# Register Blueprints - ТУК СВЪРЗВАМЕ ВСИЧКИ СТРАНИЦИ
+app.register_blueprint(ui_bp)      # Добавяме началната страница
 app.register_blueprint(contact_bp)
 app.register_blueprint(notify_bp)
 app.register_blueprint(measure_bp)
