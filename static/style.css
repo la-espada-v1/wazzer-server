@@ -40,7 +40,7 @@ font-family: 'Monograph', sans-serif;
 }
 
 .top-header {
-width: 100%;
+width: 90%;
 padding: 2rem 1rem;
 display: flex;
 flex-direction: column;
@@ -55,6 +55,13 @@ font-weight: 800;
 letter-spacing: 0.3rem;
 color: var(--cream);
 text-transform: uppercase;
+}
+
+@media (max-width: 768px) {
+  .main-title {
+    font-size: 4.5rem;
+    letter-spacing: 0.15rem;
+  }
 }
 
 .theme-btn {
