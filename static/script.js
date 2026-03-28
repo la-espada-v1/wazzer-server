@@ -135,8 +135,8 @@ async function addContact() {
         return;
     }
 
-    if (inputTelephone[0] !== "0" || inputTelephone.length !== 10) {
-        alert("Error: Phone must start with '0' and be 10 digits!");
+    if (inputTelephone.length < 10) {
+        alert("Error: Phone must start with '0' or country code and be at least 10 digits!");
         return;
     }
 
