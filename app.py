@@ -5,7 +5,7 @@ from routes.configuration import config_bp, seed_defaults
 from routes.ui import ui_bp
 from routes.contact import contact_bp
 from routes.notify import notify_bp
-from routes.measure import measure_bp
+from routes.shower import shower_bp
 import os
 
 app = Flask(__name__)
@@ -20,8 +20,7 @@ db.init_app(app)
 app.register_blueprint(ui_bp)
 app.register_blueprint(contact_bp)
 app.register_blueprint(notify_bp)
-app.register_blueprint(measure_bp)
-
+app.register_blueprint(shower_bp)
 app.register_blueprint(config_bp)
 
 with app.app_context():
@@ -30,4 +29,4 @@ with app.app_context():
     print("--- Сървърът е готов и базата е проверена ---")
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    app.run(debug=True, host='0.0.0.0', port=5000, use_reloader=False)
