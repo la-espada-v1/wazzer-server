@@ -6,9 +6,9 @@ config_bp = Blueprint('configuration', __name__)
 DEFAULT_SETTINGS = {
     "lowHR": 50.0,
     "highHR": 120.0,
-    "lowHRTemperature": 34.0,
-    "regular": 36.6,
-    "high": 38.5
+    "lowHRTemperature": 20.0,
+    "regularHRTemperature": 36.6,
+    "highHRTemperature": 21.5
 }
 
 
@@ -41,14 +41,14 @@ def update_or_create(key, value):
 @config_bp.route('/configuration/hr', methods=['POST'])
 def set_hr():
     data = request.json
-    update_or_create('lowHR', data.get('lowHR'))
-    update_or_create('highHR', data.get('highHR'))
+    update_or_create('lowHRTemperature', data.get('lowHRTemperature'))
+    update_or_create('highHRTemperature', data.get('highHRTemperature'))
     return jsonify({"status": "updated"}), 200
 
 @config_bp.route('/configuration/temperature', methods=['POST'])
 def set_temp():
     data = request.json
     update_or_create('lowHRTemperature', data.get('lowHRTemperature'))
-    update_or_create('regular', data.get('regular'))
-    update_or_create('high', data.get('high'))
+    update_or_create('regularHRTemperature', data.get('regularHRTemperature'))
+    update_or_create('highHRTemperature', data.get('highHRTemperature'))
     return jsonify({"status": "updated"}), 200

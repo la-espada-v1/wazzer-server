@@ -36,3 +36,4 @@ py -m venv venv
 # Upgrade pip and install requirements
 py -m pip install --upgrade pip
 pip install flask flask-sqlalchemy flask-cors python-dotenv
+```
